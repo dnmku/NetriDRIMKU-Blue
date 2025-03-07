@@ -1,0 +1,241 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75, shrink-to-fit=no">
+    <title>DRI Calculator </title>
+    <link href="css/main.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          document.body.style.zoom = "80%";  // Apply 80% zoom
+        });
+      </script>
+      
+</head>
+
+<body onpageshow="calculateDRI()">
+    <img src="media/background.png" 
+     style="width: 100%; height: 140%; object-fit: cover; position: absolute; top: 200px; left: 0; z-index: -1;">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/main.js">
+    </script>
+    <h1 class="title">DRI Calculator</h1>
+    
+    <div class="container">
+        <div class="controllerdiv" onclick="calculateDRI()">
+            <div class="brand"><img src="media/DRI-logo.ico " />
+            </div>
+            <div class="formholder">
+                <form class="form cf">
+                    
+                    <h4>Sensor Resolution</h4>
+                    <br class="clear" />
+                    <div class="plan cf" onclick="calculateFov()">
+                        <input type="radio" name="imageResolution" id="240" value="320"><label class="premium-label four col" for="240">320x240</label>
+                        <input type="radio" name="imageResolution" id="288" value="384"> <label class="free-label four col" for="288">384x288</label>
+                        <input type="radio" name="imageResolution" id="480" value="640" checked><label class="basic-label four col" for="480">640x480</label>
+                        <input type="radio" name="imageResolution" id="512" value="640"><label class="basic-label four col" for="512">640x512</label>
+                        <input type="radio" name="imageResolution" id="1024" value="1280"><label class="premium-label four col" for="1024">1280x1024</label>
+                        <input type="radio" name="imageResolution" id="1080" value="1920"><label class="premium-label four col" for="1080">1920x1080</label>
+                    </div>
+                    <br class="clear" />
+                    <h4>Sensor Pixel Pitch</h4>
+                    <div class="plan cf">
+                        <input type="radio" name="pitch" id="3.5" value="3.5" checked><label class="free-label four col" for="3.5">3.5 &#181;m</label>
+                        <input type="radio" name="pitch" id="10" value="10"><label class="basic-label four col" for="10">10 &#181;m</label>
+                        <input type="radio" name="pitch" id="free" value="12" checked><label class="free-label four col" for="free">12 &#181;m</label>
+                        <input type="radio" name="pitch" id="basic" value="15"><label class="basic-label four col" for="basic">15 &#181;m</label>
+                        <input type="radio" name="pitch" id="premium" value="17"><label class="premium-label four col" for="premium">17 &#181;m</label>
+                    </div>
+                    <br class="clear" />
+
+                    <input type="radio" name="pitch" id="CustomP" value="" onclick="enableCustomPitch('CustomPitch');">
+                    <input type="text" id="CustomPitch" class="customTextbox" name="fname" placeholder="Custom" value="" disabled="disabled" onchange="calculateDRI()"><span class="mUm">&#181;m</span>
+                    <h4>Lens Focal Length</h4>
+                    <div class="plan cf">
+                        <ul class="ks-cboxtags">
+                            <li><input type="checkbox" name="focalLength" id="9mm" value="9"><label for="9mm">9 mm</label></li>
+                            <li><input type="checkbox" name="focalLength" id="19mm" value="19"><label for="19mm">19 mm</label></li>
+                            <li><input type="checkbox" name="focalLength" id="25mm" value="25"><label for="25mm">25 mm</label></li>
+                            <li><input type="checkbox" name="focalLength" id="35mm" value="35"><label for="35mm">35 mm</label></li>
+                            <li><input type="checkbox" name="focalLength" id="60mm" value="60"><label for="60mm">60 mm</label></li>
+                            <li><input type="checkbox" name="focalLength" id="70mm" value="70" checked><label for="70mm">70 mm</label></li>
+                            <li><input type="checkbox" name="focalLength" id="100mm" value="100"><label for="100mm">100 mm</label></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                    <input type="checkbox" name="focalLength" id="CustomF" value="" onclick="enableCustomFocalLength('CustomFocalLength');">
+                    <input type="text" id="CustomFocalLength" class="customTextbox" name="focalLength" placeholder="Custom" value="" disabled="disabled" onchange="calculateDRI()"><span class="mUm">mm</span>
+                    <br class="clear" />
+                    <h4>Target</h4>
+                    <div class="targetDiv">
+                        <ul class="ks-cboxtags target">
+                            <li><input type="checkbox" name="target" id="Human" value="Human" checked><label for="Human"><img src="media/Human.png"/>Human</label></li>
+                            <li><input type="checkbox" name="target" id="Vehicle" value="Vehicle" checked><label for="Vehicle"><img src="media/Vehicle.png"/>Vehicle</label></li>
+                            <li><input type="checkbox" name="target" id="Tank" value="Tank"><label for="Tank"><img src="media/Tank.png"/>Tank</label></li>
+                            <li><input type="checkbox" name="target" id="Warship" value="Warship"><label for="Warship"><img src="media/Warship.png"/>Ship</label></li>
+                            <li><input type="checkbox" name="target" id="Drone" value="Drone"><label for="Drone"><img src="media/Drone.png"/>Drone</label></li>
+                            <li><input type="checkbox" name="target" id="Chopper" value="Chopper"><label for="Chopper"><img src="media/Chopper.png"/>Helicopter</label></li>
+                            <li><input type="checkbox" name="target" id="Airbus" value="Aeroplane"><label for="Airbus"><img src="media/Airbus.png"/>Aeroplane</label></li>
+                        </ul>
+                    </div>
+                    <input type="checkbox" name="target" id="Custom" value="Custom" onclick="enableCustomtarget('CustomWidth','CustomHeight');">
+                    <input type="text" id="CustomWidth" class="customTextbox" name="fname" placeholder="Width" value="" disabled="disabled" onchange="calculateDRI()"><span class="mUm">x</span><input type="text" id="CustomHeight" class="customTextbox"
+                        name="fname" placeholder="Height" onChange="handleValues(this);" value="" disabled="disabled" onchange="calculateDRI()"><span class="mUm">m</span>
+                    <br class="clear" />
+                    <h4>Detection Probability</h4>
+                    <div class="plan cf">
+                        <input type="radio" name="probability" id="50" value="50" checked> <label class="free-label four col" for="50">50%</label>
+                        <input type="radio" name="probability" id="70" value="70"><label class="basic-label four col" for="70">70%</label>
+                        <input type="radio" name="probability" id="90" value="90"><label class="premium-label four col" for="90">90%</label>
+                    </div>
+
+            </div>
+            
+
+
+            <div class="infoTable">
+                <h3>Info</h3>
+                <div id="table1"></div>
+            </div>
+             
+            <input class="submit" type="button" onclick="calculateDRI()" value="Calculate">
+            <input class="submit" type="button" onclick="print('../sample.pdf')" value="Print">
+            </form> 
+            <div class="header">
+                <!--<p class="dri">
+                                                        <span class="driSpanD">D</span>
+                                                        <span class="driSpanR">R</span>
+                                                        <span class="driSpanI">I</span>
+                                                </p>-->
+                <!--<p onclick="javascipt:window.open('media/DRI Calculations.pdf');" class="popup headerbt2">STANAG 4347</p>	--> 
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="contentdiv">
+
+        <div class="plan cf borderSty">
+            <h3 class="cd"></h3>
+            <form class="form cf formholder DPFilter">
+                <div class="secFilter secFilterW">
+
+                </div>
+                <div class="secFilter " style="float: right!important">
+                    
+                </div>
+
+            </form>
+            
+
+        </div>
+        <div class="singleColumn" id="tgts">
+            <!--*********************** append div*****************************************
+                ***************************************************************************-->
+
+            <div class="singleColumn" id="tgts">
+                <ul id="myList">
+                    <li id="Node">
+                        <img src="media/Human.png">
+                        <p>HUMAN 1.8m x 0.5m | CD: 0.95m </p>
+                        <div class="clear"></div>
+                        <p>9 mm</p>
+                        <!--***************4/16/2020 changes***************!-->
+                        <!-- 4/16/2020 Focal & Resolution Data-->
+                        <div class="chartLeft">
+                            <span>10 µm</span>
+                            <span>640x480</span>
+                        </div>
+                        <!-- 4/16/2020 End Focal & Resolution Data -->
+
+                        <!-- 4/16/2020 New Chart Container tag-->
+                        <div class="chartRight">
+                            <!-- 4/16/2020 /New Chart Container tag -->
+
+                            <div class="chartHolder">
+                                <div id="Human_9" class="DchartBar" style="width: 41.7143%;">
+                                    <span>470 m </span>
+                                </div>
+                                <div id="Human_9" class="RchartBar" style="width: 22.5714%;">
+                                    <span>120 m </span>
+                                </div>
+                                <div id="Human_9" class="IchartBar" style="width: 15.8393%;">
+                                    <span>60 m </span>
+                                </div>
+                            </div>
+                            <!-- 4/16/2020 End New Chart Container tag-->
+                        </div>
+                        <!-- 4/16/2020 End New Chart Container tag-->
+                        <div class="clear"></div>
+
+
+                        <!-- 4/16/2020 Focal & Resolution Data -->
+                        <div class="chartLeft">
+                            <span>12 µm</span>
+                            <span></span>
+                        </div>
+                        <!-- 4/16/2020 End Focal & Resolution Data -->
+
+                        <!-- 4/16/2020 New Chart Container tag-->
+                        <div class="chartRight">
+                            <!-- 4/16/2020 /New Chart Container tag -->
+
+                            <div class="chartHolder">
+                                <div id="Human_9" class="DchartBar" style="width: 46.7143%;">
+                                    <span>470 m </span>
+                                </div>
+                                <div id="Human_9" class="RchartBar" style="width: 27.5714%;">
+                                    <span>120 m </span>
+                                </div>
+                                <div id="Human_9" class="IchartBar" style="width: 20.8393%;">
+                                    <span>60 m </span>
+                                </div>
+                            </div>
+
+                            <!-- 4/16/2020 End New Chart Container tag-->
+                        </div>
+                        <!-- 4/16/2020 End New Chart Container tag-->
+
+
+                        <!-- 4/16/2020 Height-->
+                        <div class="clear height"></div>
+                        <!-- 4/16/2020 / Height-->
+
+
+                        <!--******REPEAT New chart set here****-->
+
+
+                        <hr>
+                        <!--***************End of 4/16/2020 changes***************!-->
+                    </li>
+                    <li id="Node"></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="clear"></div>
+        
+
+            <div id="content2">
+                <div id="noteS">
+
+                </div>
+                <br/>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+
+
+
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>
